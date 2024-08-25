@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  percona:
+    image: percona:latest
+    container_name: percona_db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: testdb
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./percona/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - db_network
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: testuser
+      POSTGRES_PASSWORD: testpassword
+      POSTGRES_DB: testdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgresql/postgresql.conf:/etc/postgresql/postgresql.conf
+    networks:
+      - db_network
+
+  nodeapp:
+    build:
+      context: ./app
+    container_name: node_app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - percona
+      - postgres
+    networks:
+      - db_network
+
+networks:
+  db_network:
+    driver: bridge
