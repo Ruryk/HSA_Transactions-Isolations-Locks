@@ -9,8 +9,6 @@ services:
       MYSQL_DATABASE: testdb
     ports:
       - "3306:3306"
-    volumes:
-      - ./percona/my.cnf:/etc/mysql/my.cnf
     networks:
       - db_network
 
@@ -23,8 +21,6 @@ services:
       POSTGRES_DB: testdb
     ports:
       - "5432:5432"
-    volumes:
-      - ./postgresql/postgresql.conf:/etc/postgresql/postgresql.conf
     networks:
       - db_network
 
