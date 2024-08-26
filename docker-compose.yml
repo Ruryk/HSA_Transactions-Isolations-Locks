@@ -9,8 +9,6 @@ services:
       MYSQL_DATABASE: testdb
     ports:
       - "3306:3306"
-    networks:
-      - db_network
 
   postgres:
     image: postgres:latest
@@ -21,21 +19,3 @@ services:
       POSTGRES_DB: testdb
     ports:
       - "5432:5432"
-    networks:
-      - db_network
-
-  nodeapp:
-    build:
-      context: ./app
-    container_name: node_app
-    ports:
-      - "3000:3000"
-    depends_on:
-      - percona
-      - postgres
-    networks:
-      - db_network
-
-networks:
-  db_network:
-    driver: bridge
